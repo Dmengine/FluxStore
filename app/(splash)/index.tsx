@@ -1,12 +1,13 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    Dimensions,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { s, vs } from "react-native-size-matters";
 
@@ -15,9 +16,16 @@ interface SplashCardProps {
   header: string;
   description: string;
   width: number;
+  onShoppingPress: () => void;
 }
 
-const SplashCard: React.FC<SplashCardProps> = ({ image, header, description, width }) => (
+const SplashCard: React.FC<SplashCardProps> = ({
+  image,
+  header,
+  description,
+  width,
+  onShoppingPress,
+}) => (
   <View style={[styles.card, { width }]}>
     <Image source={image} style={styles.image} />
     <View style={styles.contentOverlay}>
@@ -25,7 +33,7 @@ const SplashCard: React.FC<SplashCardProps> = ({ image, header, description, wid
         <Text style={styles.header}>{header}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
-      <TouchableOpacity style={styles.shoppingButton}>
+      <TouchableOpacity style={styles.shoppingButton} onPress={onShoppingPress}>
         <Text style={styles.buttonText}>Shopping Now</Text>
       </TouchableOpacity>
     </View>
@@ -33,8 +41,13 @@ const SplashCard: React.FC<SplashCardProps> = ({ image, header, description, wid
 );
 
 const SplashScreen = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const { width, height } = Dimensions.get("window");
+
+  const handleShoppingPress = () => {
+    router.push("/(auth)/Login");
+  };
 
   const slides = [
     {
@@ -43,12 +56,12 @@ const SplashScreen = () => {
       description: "Special new arrivals just for you",
     },
     {
-      image: require("../../assets/fluxImages/Frame\ 33091.png"),
+      image: require("../../assets/fluxImages/Group\ 33078.png"),
       header: "Update trendy outfit",
       description: "Favourite brands and hottest trends",
     },
     {
-      image: require("../../assets/fluxImages/Group\ 33078.png"),
+      image: require("../../assets/fluxImages/Frame\ 33091.png"),
       header: "Explore your true style",
       description: "Relax and let us bring the style to you",
     },
@@ -77,6 +90,7 @@ const SplashScreen = () => {
             header={slide.header}
             description={slide.description}
             width={width}
+            onShoppingPress={handleShoppingPress}
           />
         ))}
       </ScrollView>
@@ -171,5 +185,6 @@ const styles = StyleSheet.create({
     width: s(8),
     height: s(8),
     borderRadius: s(4),
+    color: "#464447",
   },
 });
